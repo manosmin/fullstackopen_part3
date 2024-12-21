@@ -1,22 +1,21 @@
 const mongoose = require('mongoose')
 
-if (process.argv.length<3) {
+if (process.argv.length < 3) {
   console.log('give password as argument')
   process.exit(1)
 }
 
 const password = process.argv[2]
 
-const url =
-  `mongodb+srv://man0sm1n96:${password}@cluster0.nsr3e.mongodb.net/`
+const url = `mongodb+srv://man0sm1n96:${password}@cluster0.nsr3e.mongodb.net/`
 
-mongoose.set('strictQuery',false)
+mongoose.set('strictQuery', false)
 
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+  name: String,
+  number: String,
 })
 
 const Person = mongoose.model('Person', personSchema)
@@ -26,7 +25,7 @@ const person = new Person({
   number: process.argv[4],
 })
 
-person.save().then(result => {
+person.save().then(() => {
   console.log('note saved!')
   mongoose.connection.close()
 })
