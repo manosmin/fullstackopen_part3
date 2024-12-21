@@ -53,6 +53,26 @@ app.post('/api/persons', (request, response) => {
     .catch(error => response.status(500).json({ error: 'failed to save person' }))
 })
 
+app.put('/api/persons/:id', (request, response) => {
+  const { name, number } = request.body
+  const { id } = request.params
+
+  if (!name || !number) {
+    return response.status(400).json({ error: 'content missing' })
+  }
+
+  Person.findById(id)
+    .then(person => {
+      person.name = name
+      person.number = number
+      return person.save()
+    })
+    .then(updatedPerson => response.json(updatedPerson))
+    .catch(error => {
+      response.status(500).json({ error: 'failed to update person' })
+    })
+})
+
 app.get('/api/info', (request, response) => {
   Person.countDocuments({})
     .then(count => {
